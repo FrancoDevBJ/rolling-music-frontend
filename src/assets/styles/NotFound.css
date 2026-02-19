@@ -1,0 +1,158 @@
+/* *{
+  text-decoration: none;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+} */
+
+.notfound-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: url(/src/assets/imagenes/logos/fondo\ musica.jpg);
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+  font-family: 'Poppins', sans-serif;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.h1Error {
+  font-size: 5em;
+  color: #ffffff;
+  font-family: 'Bangers', cursive;
+  border: 3px solid #d11c1c;
+  border-radius: 15px;
+  padding: 30px 50px;
+  text-align: center;
+  background: rgba(106, 85, 197, 0.795);
+  box-shadow: 0 0 20px #e23308, 0 0 40px #e03e16, 0 0 60px #f23d06;
+}
+
+.mainError {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+
+.paginaErrorTitulo {
+  font-size: 2em;
+  color: #ffffff;
+  
+}
+
+.textoPaginaError {
+  font-size: 1.2em;
+  color: #ffffff;
+  text-align: center;
+  max-width: 600px;
+}
+
+.bototnError {
+  padding: 10px 20px;
+  font-size: 1.5em;
+  border: none;
+  background: #39f206;
+  color: #fff;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background 0.3s ease;
+}
+
+.bototnError:hover {
+  background: #50af36;
+}
+
+.img-error {
+  width: 400px;
+}
+@media (max-width: 480px) {
+  .h1Error {
+    font-size: 2.8em;
+    padding: 15px 25px;
+  }
+
+  .paginaErrorTitulo {
+    font-size: 1.5em;
+    text-align: center;
+  }
+
+  .textoPaginaError {
+    font-size: 1em;
+    max-width: 90%;
+  }
+
+  .img-error {
+    width: 250px;
+  }
+
+  .bototnError {
+    font-size: 1.1em;
+    width: 100%;
+    padding: 12px;
+  }
+
+  .notfound-container {
+    gap: 20px;
+  }
+}
+
+@media (min-width: 481px) and (max-width: 1024px) {
+  .h1Error {
+    font-size: 3.5em;
+    padding: 20px 35px;
+  }
+
+  .paginaErrorTitulo {
+    font-size: 1.8em;
+  }
+
+  .textoPaginaError {
+    font-size: 1.1em;
+    max-width: 80%;
+  }
+
+  .img-error {
+    width: 320px;
+  }
+
+  .bototnError {
+    font-size: 1.3em;
+  }
+
+  .notfound-container {
+    padding: 30px;
+  }
+}
+
+@media (min-width: 1025px) and (max-width: 1366px) {
+  .h1Error {
+    font-size: 4.2em;
+    padding: 25px 40px;
+  }
+
+  .paginaErrorTitulo {
+    font-size: 1.9em;
+  }
+
+  .textoPaginaError {
+    font-size: 1.15em;
+    max-width: 85%;
+  }
+
+  .img-error {
+    width: 350px;
+  }
+
+  .bototnError {
+    font-size: 1.4em;
+  }
+
+  .notfound-container {
+    padding: 40px;
+  }
+}
