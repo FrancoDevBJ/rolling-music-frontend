@@ -23,7 +23,7 @@ export default function Player() {
 
   const getAudioUrl = () => {
     if (!currentSong) return null;
-    const url = currentSong.preview || currentSong.url_cancion || currentSong.audioPath;
+    const url = currentSong.audio || currentSong.preview || currentSong.url_cancion || currentSong.audioPath;
     if (!url) return null;
     return url.startsWith('http') ? url : `${API_URL_FILES}/${url}`;
   };
@@ -32,7 +32,7 @@ export default function Player() {
     if (!currentSong) return null;
     const img = currentSong.cover || currentSong.album?.cover_medium || currentSong.url_imagen || currentSong.imagenUrl || currentSong.imagePath;
     if (!img) return "https://i.ibb.co/ZRn36S2x/Cover-Default-Playlist.jpg";
-    return img.startsWith('http') ? img : `${API_URL_FILES}/uploads/covers/${img}`;
+    return img.startsWith('http') ? img : `${API_URL_FILES}/${img}`;
   };
 
   const audioUrl = getAudioUrl();

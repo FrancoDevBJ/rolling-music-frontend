@@ -25,11 +25,9 @@ export const SongsProvider = ({ children }) => {
         title: s.title,
         artist: { name: s.artist },
         // 🛠️ Usamos 'audio' y 'cover' que son los nombres de tu controlador
-        preview: `${API_URL_FILES}/uploads/songs/${s.audio}`, 
+        preview: s.audio, 
         album: { 
-            cover_medium: s.cover?.startsWith('http') 
-                ? s.cover 
-                : `${API_URL_FILES}/uploads/covers/${s.cover}` 
+            cover_medium: s.cover 
         },
         codigo_unico: `local-${s._id}`
     });
