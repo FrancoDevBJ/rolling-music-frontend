@@ -24,14 +24,14 @@ const Canciones = ({ songs, onRemoveSong, isPlaylistView = false }) => {
           let imageUrl = item.cover || item.imagePath || item.cover_medium || item.imagenUrl || item.album?.cover_medium;
           
           if (imageUrl && !imageUrl.startsWith('http')) {
-            imageUrl = `${API_URL_FILES}/uploads/covers/${imageUrl}`;
+            imageUrl = `${API_URL_FILES}/rollingMusic/covers/${imageUrl}`;
           } else if (!imageUrl) {
             imageUrl = "https://i.ibb.co/ZRn36S2x/Cover-Default-Playlist.jpg";
           }
 
           // 🛠️ LÓGICA DE REPRODUCCIÓN
           if (item.audio && !item.audio.startsWith('http')) {
-            item.preview = `${API_URL_FILES}/uploads/songs/${item.audio}`;
+            item.preview = `${API_URL_FILES}/rollingMusic/songs/${item.audio}`;
           }
 
           const title      = item.title  || item.titulo || item.name  || "Título Desconocido";

@@ -1,4 +1,4 @@
-const DEEZER_API_BASE = 'https://api.deezer.com/api';
+const DEEZER_API_BASE = '/api';
 
 // La función normalizeSong debe devolver un objeto que se parezca lo más posible
 // al formato original de Deezer, para que el componente Canciones.jsx no se rompa.

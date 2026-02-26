@@ -200,9 +200,9 @@ const Admin = () => {
                     {adminSongs && adminSongs.map((song) => (
                         <div key={song._id} className="flex items-center bg-neutral-900/60 p-4 rounded-2xl border border-white/5">
                             <img 
-                                src={`${import.meta.env.VITE_API_URL_FILES}/uploads/covers/${song.cover}`} 
+                                src={`${import.meta.env.VITE_API_URL_FILES}/rollingMusic/covers/${song.cover}`} 
                                 className="w-14 h-14 object-cover rounded-xl"
-                                onError={(e) => { e.target.src = "https://via.placeholder.com/150"; }}
+                                onError={(e) => { e.target.src = "https://i.ibb.co/ZRn36S2x/Cover-Default-Playlist.jpg"; }}
                             />
                             <div className="ml-5 grow">
                                 <h4 className="font-bold text-md">{renderSafeText(song.title)}</h4>
