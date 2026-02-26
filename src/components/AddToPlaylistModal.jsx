@@ -24,6 +24,8 @@ const AddToPlaylistModal = ({ song, onClose }) => {
                     icon: 'success',
                     title: '¡Añadida!',
                     text: `Canción agregada a la lista`,
+                    background: '#171717',
+                    color: '#fff',
                     toast: true,
                     position: 'top-end',
                     showConfirmButton: false,

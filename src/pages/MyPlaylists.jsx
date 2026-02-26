@@ -43,7 +43,7 @@ const MyPlaylists = () => {
             <main className="[grid-area:main] overflow-y-auto bg-gradient-to-b from-purple-900/20 to-black p-8">
                 <div className="max-w-7xl mx-auto">
                     <div className="flex justify-between items-center mb-10">
-                        <h1 className="text-4xl font-black">Mis Playlists</h1>
+                        <h1 className="text-4xl font-black">Listas de Reproducción</h1>
                         <button 
                             onClick={() => setShowModal(true)}
                             className="bg-violet-600 hover:bg-violet-500 text-white px-6 py-2 rounded-full font-bold transition-all transform active:scale-95"

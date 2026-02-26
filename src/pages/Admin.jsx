@@ -200,7 +200,7 @@ const Admin = () => {
                     {adminSongs && adminSongs.map((song) => (
                         <div key={song._id} className="flex items-center bg-neutral-900/60 p-4 rounded-2xl border border-white/5">
                             <img 
-                                src={`http://localhost:3000/uploads/covers/${song.cover}`} 
+                                src={`${import.meta.env.VITE_API_URL_FILES}/uploads/covers/${song.cover}`} 
                                 className="w-14 h-14 object-cover rounded-xl"
                                 onError={(e) => { e.target.src = "https://via.placeholder.com/150"; }}
                             />
