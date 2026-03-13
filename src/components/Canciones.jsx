@@ -10,6 +10,8 @@ const Canciones = ({ songs, onRemoveSong, isPlaylistView = false }) => {
 
   const [selectedSongForPlaylist, setSelectedSongForPlaylist] = useState(null);
 
+  const [mobileMenuSong, setMobileMenuSong] = useState(null);
+
   const API_URL_FILES = import.meta.env.VITE_API_URL_FILES || 'http://localhost:3000';
 
   if (!songs || songs.length === 0) return null;
@@ -104,6 +106,84 @@ const Canciones = ({ songs, onRemoveSong, isPlaylistView = false }) => {
                   </svg>
                 </button>
               )}
+
+
+
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setMobileMenuSong(item);
+                }}
+                className="absolute top-3 right-3 md:hidden z-30 p-2 rounded-full bg-black/50"
+              >
+                ⋮
+              </button>
+              {mobileMenuSong && (
+                <div className="fixed inset-0 z-50 md:hidden">
+
+                  {/* fondo oscuro */}
+                  <div
+                    className="absolute inset-0 bg-black/60"
+                    onClick={() => setMobileMenuSong(null)}
+                  />
+
+                  {/* panel */}
+                  <div className="absolute bottom-0 left-0 right-0 bg-neutral-900 rounded-t-2xl p-6 animate-slideUp">
+
+                    {/* info canción */}
+                    <div className="flex items-center gap-4 mb-6">
+                      <img
+                        src={mobileMenuSong.cover_medium || mobileMenuSong.cover}
+                        className="w-16 h-16 rounded-lg"
+                      />
+
+                      <div>
+                        <p className="font-bold">{mobileMenuSong.title}</p>
+                        <p className="text-sm text-gray-400">
+                          {mobileMenuSong.artist?.name}
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* acciones */}
+
+                    <button
+                      onClick={() => {
+                        toggleFavorite(mobileMenuSong);
+                        setMobileMenuSong(null);
+                      }}
+                      className="w-full text-left py-3 border-b border-neutral-800"
+                    >
+                      ❤️ Agregar a favoritos
+                    </button>
+
+                    <button
+                      onClick={() => {
+                        setSelectedSongForPlaylist(mobileMenuSong);
+                        setMobileMenuSong(null);
+                      }}
+                      className="w-full text-left py-3 border-b border-neutral-800"
+                    >
+                      ➕ Agregar a playlist
+                    </button>
+
+                    {isPlaylistView && (
+                      <button
+                        onClick={() => {
+                          onRemoveSong(mobileMenuSong.codigo_unico);
+                          setMobileMenuSong(null);
+                        }}
+                        className="w-full text-left py-3 text-red-500"
+                      >
+                        ❌ Quitar de lista
+                      </button>
+                    )}
+
+                  </div>
+                </div>
+              )}
+
+               
 
               <div className="relative overflow-hidden rounded-lg mb-3 aspect-square shadow-black/50 shadow-md">
                 <img
