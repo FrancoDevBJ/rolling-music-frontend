@@ -16,6 +16,15 @@
   --animate-fade-in: fadeIn 0.5s ease-out forwards;
 }
 
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
 /* Scroll más lindo */
 ::-webkit-scrollbar {
   width: 6px;
