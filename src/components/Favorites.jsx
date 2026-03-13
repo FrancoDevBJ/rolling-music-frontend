@@ -1,9 +1,6 @@
 import React, { useState } from 'react';
 import { useSongs } from '../context/SongsContext'; 
 import Canciones from '../components/Canciones.jsx'; 
-import Navbar from '../components/Navbar.jsx';
-import Aside from '../components/Aside.jsx';
-import Player from '../components/Player.jsx';
 import Footer from '../components/Footer.jsx';
 
 const Favorites = () => {
@@ -20,21 +17,7 @@ const Favorites = () => {
     const favoriteSongs = allSongs.filter(song => favorites.includes(song.codigo_unico));
 
     return (
-        <div id="app" className="grid w-full h-screen bg-black text-white m-0 p-0 overflow-hidden"
-             style={{
-                gridTemplateAreas: '"navbar navbar" "aside main" "player player"',
-                gridTemplateColumns: `${isOpen ? '260px' : '0px'} 1fr`,
-                gridTemplateRows: 'auto 1fr auto'
-             }}>
-            
-            <header className="[grid-area:navbar] z-50">
-                <Navbar toggleSidebar={() => setIsOpen(!isOpen)}/>
-            </header>
-
-            <aside className={`[grid-area:aside] flex flex-col bg-neutral-950 transition-all duration-300 overflow-y-auto ${isOpen ? 'opacity-100' : 'opacity-0 -translate-x-full'}`}>
-                <Aside />
-            </aside>
-
+        <div>
             <main className="[grid-area:main] overflow-y-auto bg-gradient-to-b from-purple-900/20 to-black p-8">
                 <div className="p-4 md:p-8 space-y-8 max-w-7xl mx-auto">
                     
@@ -69,12 +52,11 @@ const Favorites = () => {
                     )}
 
                 </div>
-                <Footer />
+
             </main>
 
-            <footer className="[grid-area:player] w-full border-t border-white/5">
-                <Player/>
-            </footer>
+            <Footer />
+            
         </div>
     );
 };

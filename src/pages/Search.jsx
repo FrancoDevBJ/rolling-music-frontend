@@ -1,9 +1,6 @@
 import React, { useState } from 'react';
 import { useSongs } from '../context/SongsContext'; 
 import Canciones from '../components/Canciones.jsx'; 
-import Navbar from '../components/Navbar.jsx';
-import Aside from '../components/Aside.jsx';
-import Player from '../components/Player.jsx';
 import Footer from '../components/Footer.jsx';
 
 const GENRES = [
@@ -59,20 +56,7 @@ const Search = () => {
     }
 
     return (
-        <div id="app" className="grid w-full h-screen bg-black text-white m-0 p-0 overflow-hidden"
-             style={{
-                gridTemplateAreas: '"navbar navbar" "aside main" "player player"',
-                gridTemplateColumns: `${isOpen ? '260px' : '0px'} 1fr`,
-                gridTemplateRows: 'auto 1fr auto'
-             }}>
-            
-            <header className="[grid-area:navbar] z-50">
-                <Navbar toggleSidebar={() => setIsOpen(!isOpen)}/>
-            </header>
-
-            <aside className={`[grid-area:aside] flex flex-col bg-neutral-950 transition-all duration-300 overflow-y-auto ${isOpen ? 'opacity-100' : 'opacity-0 -translate-x-full'}`}>
-                <Aside />
-            </aside>
+        <div>
 
             <main className="[grid-area:main] overflow-y-auto w-full bg-gradient-to-b from-neutral-900 to-black">
                 <div className='animate-fade-in px-4 md:px-8 py-6 w-full max-w-7xl mx-auto'>
@@ -148,7 +132,7 @@ const Search = () => {
             </main>
 
             <footer className="[grid-area:player] w-full border-t border-white/5">
-                <Player/>
+                
             </footer>
         </div>
     );

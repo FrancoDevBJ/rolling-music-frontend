@@ -14,7 +14,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLinkedin } from "@fortawesome/free-brands-svg-icons";
 import { faGithub } from "@fortawesome/free-brands-svg-icons";
 import Footer from '../components/Footer';
-import Navbar from '../components/Navbar';
 
 
 function About() {
@@ -81,12 +80,7 @@ function About() {
   return (
     <>
 
-    <div id="app2">
-      <header className="[grid-area:navbar] flex-col flex h-24"> 
-            <Navbar/>
-    </header>
-
-
+    <div>
     <div
     className="min-h-screen bg-cover bg-center bg-no-repeat relative flex flex-col justify-between items-center pt-20 px-4 md:px-10"
     style={{ backgroundImage: `url(${fondo})` }}>
@@ -117,20 +111,20 @@ function About() {
       {miembroSeleccionado.id !== 0 &&(
         <button 
         onClick={() => window.open(miembroSeleccionado.linkedin, '_blank', 'noopener,noreferrer')}
-        className='flex justify-center flex-wrap gap-5 px-2 py-2 mt-7 bg-violet-700 cursor-pointer hover:cursor-pointer text-white font-semibold rounded-lg shadow-md  hover:bg-blue-500 hover:scale-105 active:scale-95 transition-all duration-300 z-999'
+        className='flex-wrap gap-5 px-2 py-2 mt-7 bg-violet-700 cursor-pointer hover:cursor-pointer text-white font-semibold rounded-lg shadow-md  hover:bg-black hover:scale-105 active:scale-95 transition-all duration-300 z-999'
         ><FontAwesomeIcon icon={faLinkedin} size='2x'/></button>
       )}
       {miembroSeleccionado.id !== 0 &&(
         <button 
         onClick={() => window.open(miembroSeleccionado.github, '_blank', 'noopener,noreferrer')}
-        className='px-2 py-2 mt-7 mx-7 cursor-pointer hover:cursor-pointer bg-violet-700 text-white font-semibold rounded-lg shadow-md  hover:bg-black hover:scale-105 active:scale-95 transition-all duration-300 z-999'><FontAwesomeIcon icon={faGithub} size='2x'/></button>
+        className='flex-war gap-5 px-2 py-2 mt-7 bg-violet-700 cursor-pointer hover:cursor-pointer text-white font-semibold rounded-lg shadow-md  hover:bg-black hover:scale-105 active:scale-95 transition-all duration-300 z-999'><FontAwesomeIcon icon={faGithub} size='2x'/></button>
       )}
       </div>
 
       </div>
       </div>
 
-      <div className='animate-fade-in grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:flex mt-10 mb-10 relative gap-4 justify-center'
+      <div className='animate-fade-in grid grid-cols-2 md:grid-cols-3 lg:flex mt-10 mb-10 relative gap-4 justify-center'
       >
         {miembros.map((m, index) =>(
           <img
@@ -139,20 +133,18 @@ function About() {
         alt={m.nombre}
         onClick={() => setMiembroSeleccionado(m)}
         className={`brightness-50 hover:brightness-90
-        w-full h-56 sm:h-60 object-contain cursor-pointer
+        w-full h-full sm:h-60 object-contain cursor-pointer
         mask-[linear-gradient(to_bottom,black_60%,transparent)]
         hover:mask-[linear-gradient(to_bottom,black_90%,transparent)]
         opacity-90 hover:scale-110 transition-transform duration-300
         hover:opacity-100 hover:z-50 relative
-        ${index !== 0 ? '-ml-10' : ''}`}
+        ${index !== 0 ? 'object-cover' : ''}`}
         />
         ))}
       </div>
     </div>
 
     </div>
-
-    
     <Footer/>
     </>
   )

@@ -16,7 +16,7 @@ const Navbar = ({ toggleSidebar }) => {
 
   const handleMenuClick = () => {
     toggleSidebar();
-    setIsMobileMenuOpen(!isMobileMenuOpen);
+    setIsMobileMenuOpen(prev => !prev);
   };
 
   const defaultAvatar = 'https://cdn-icons-png.flaticon.com/512/10813/10813372.png';
@@ -144,30 +144,7 @@ const Navbar = ({ toggleSidebar }) => {
       />
 
       {/* Drawer móvil mejorado */}
-      {isMobileMenuOpen && (
-        <div
-          className="md:hidden fixed inset-0 z-[60] bg-black/80 backdrop-blur-sm transition-all duration-300"
-          onClick={() => setIsMobileMenuOpen(false)}
-        >
-          <div
-            className="bg-[#120228] w-72 h-full p-4 shadow-2xl flex flex-col border-r border-white/5"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="flex items-center justify-between mb-8 pb-4 border-b border-white/5">
-              <img src={Logo} alt="Logo" className="w-10" />
-              <button onClick={() => setIsMobileMenuOpen(false)} className="text-white">
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </button>
-            </div>
-            
-            <div className="flex-1 overflow-y-auto">
-                <Aside onItemClick={() => setIsMobileMenuOpen(false)} />
-            </div>
-          </div>
-        </div>
-      )}
+      
     </>
   );
 };

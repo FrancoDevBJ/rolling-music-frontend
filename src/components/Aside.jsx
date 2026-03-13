@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import SideMenuItem from "./SideMenuItem";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useAuth } from "../context/AuthContext";
@@ -21,18 +22,23 @@ function Aside({ onItemClick }) {
   const { isAdmin } = useAuth();
   const { playlists } = useSongs(); // 🛠️ Obtenemos las listas del contexto global
 
+  const handleItemClick = () => {
+  if (window.innerWidth < 768) {
+    onItemClick();
+  }
+};
+
   return (
-    <aside className="flex flex-col
+    <div className="flex flex-col h-full overflow-y-auto
                       bg-gradient-to-b from-purple-950/40 to-black/90
-                      border-r border-purple-500/10
-                      w-full h-full overflow-y-auto">
+                      border-r border-purple-500/10">
       
       <nav aria-label="Navegación principal" className="flex flex-col flex-1 p-3 pt-6">
         <ul className="flex flex-col space-y-2">
           
           {/* SECCIÓN PRINCIPAL */}
           {menuItems.map(({ href, label, icon }) => (
-            <SideMenuItem key={href} href={href} onClick={onItemClick}>
+            <SideMenuItem key={href} href={href} onClick={handleItemClick}>
               <FontAwesomeIcon
                 icon={icon}
                 className="w-4 h-4 shrink-0 text-purple-400 group-hover:text-white transition-colors"
@@ -43,7 +49,7 @@ function Aside({ onItemClick }) {
           ))}
 
           {/* 🛠️ FAVORITOS (Separado de Playlists) */}
-          <SideMenuItem href="/favoritos" onClick={onItemClick}>
+          <SideMenuItem href="/favoritos" onClick={handleItemClick}>
             <FontAwesomeIcon
               icon={faHeart}
               className="w-4 h-4 shrink-0 text-red-500"
@@ -59,16 +65,16 @@ function Aside({ onItemClick }) {
                 Tu Biblioteca
               </p>
               {/* Enlace rápido para ver todas o crear */}
-              <a href="/mis-playlists" onClick={onItemClick} className="text-[10px] text-purple-400 hover:text-white">Ver todo</a>
+              <Link to="/my-playlists" onClick={handleItemClick} className="text-[10px] text-purple-400 hover:text-white">Ver todo</Link>
             </div>
             
             <div className="flex flex-col space-y-1">
-              {playlists.length > 0 ? (
+              {playlists?.length > 0 ? (
                 playlists.map((pl) => (
                   <SideMenuItem 
-                    key={pl._id} 
+                    key={pl._id || pl.id} 
                     href={`/playlist/${pl._id}`} // 🛠️ Ruta dinámica al detalle
-                    onClick={onItemClick}
+                    onClick={handleItemClick}
                   >
                     <FontAwesomeIcon
                       icon={faListUl}
@@ -89,7 +95,7 @@ function Aside({ onItemClick }) {
               <p className="px-4 mb-2 text-[10px] uppercase tracking-widest font-bold text-purple-500">
                 Administración
               </p>
-              <SideMenuItem href="/admin" onClick={onItemClick}>
+              <SideMenuItem href="/admin" onClick={handleItemClick}>
                 <FontAwesomeIcon
                   icon={faLock}
                   className="w-4 h-4 shrink-0 text-fuchsia-500"
@@ -101,7 +107,7 @@ function Aside({ onItemClick }) {
           )}
         </ul>
       </nav>
-    </aside>
+    </div>
   );
 }
 

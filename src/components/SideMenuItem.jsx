@@ -7,9 +7,12 @@ function SideMenuItem({ href = "#", children, onClick }) {
         to={href}
          onClick={onClick}
         className={({ isActive }) =>
-          `flex gap-4 items-center py-3 px-5 font-medium transition duration-300 ${
-            isActive ? "text-fuchsia-500" : "text-zinc-50 hover:text-fuchsia-400"
-          }`
+        `relative flex gap-4 items-center py-3 px-5 font-medium transition duration-300 
+        ${
+        isActive
+        ? "text-fuchsia-400 bg-white/5"
+        : "text-zinc-50 hover:text-fuchsia-400 hover:bg-white/5"
+        }`
         }
       >
         {children}

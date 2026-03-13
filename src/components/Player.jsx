@@ -8,18 +8,15 @@ import { useSongs } from "../context/SongsContext";
 export default function Player() {
   const { currentSong } = useSongs();
   
-  // 🛠️ VALIDACIÓN INICIAL: Si no hay canción, no renderizamos nada.
-  // Esto evita que se vea "Sin título" y la imagen rota al cargar la app.
-  if (!currentSong) return null;
-
   const containerRef = useRef(null);
   const waveSurferRef = useRef(null);
+  const prevAudioUrlRef = useRef(null);
+
   const [isPlaying, setIsPlaying] = useState(false);
   const [volume, setVolume] = useState(0.5);
   const [showVolume, setShowVolume] = useState(false);
 
   const API_URL_FILES = import.meta.env.VITE_API_URL_FILES || 'http://localhost:3000';
-  const prevAudioUrlRef = useRef(null);
 
   const getAudioUrl = () => {
     if (!currentSong) return null;
@@ -35,10 +32,13 @@ export default function Player() {
     return img.startsWith('http') ? img : `${API_URL_FILES}/${img}`;
   };
 
-  const audioUrl = getAudioUrl();
-  const displayTitle = currentSong?.title || currentSong?.titulo || "Sin título";
-  const displayArtist = currentSong?.artist?.name || currentSong?.artista || "Artista desconocido";
-  const displayImage = getImageUrl();
+  const audioUrl = currentSong ? getAudioUrl() : null;
+
+const displayTitle = currentSong?.title || "Sin título";
+const displayArtist = currentSong?.artist?.name || "Artista desconocido";
+const displayImage = currentSong
+  ? getImageUrl()
+  : "https://i.ibb.co/ZRn36S2x/Cover-Default-Playlist.jpg";
 
   useEffect(() => {
     if (!containerRef.current) return;
@@ -66,28 +66,27 @@ export default function Player() {
     return () => ws.destroy();
   }, []);
 
+
   useEffect(() => {
-    if (!audioUrl || !waveSurferRef.current) return;
+  if (!audioUrl || !waveSurferRef.current) return;
 
-    const isNewSong = audioUrl !== prevAudioUrlRef.current;
-    prevAudioUrlRef.current = audioUrl;
+  const ws = waveSurferRef.current;
 
-    const ws = waveSurferRef.current;
-    const audioEntity = ws.getMediaElement();
-    if (audioEntity) {
-        audioEntity.crossOrigin = "anonymous";
-    }
+  ws.load(audioUrl);
 
-    ws.load(audioUrl);
+  ws.once("ready", () => {
+    ws.setVolume(volume);
+    ws.play().catch(err => console.error(err));
+  });
 
-    ws.once("ready", () => {
-        ws.setVolume(volume);
-        if (isNewSong) {
-            ws.play().catch(err => console.error("Error al reproducir:", err));
-            setIsPlaying(true);
-        }
-    });
-  }, [audioUrl]);
+}, [audioUrl]);
+
+ 
+
+  useEffect(() => {
+  console.log("Player mounted");
+  return () => console.log("Player unmounted");
+}, []);
 
   const togglePlay = () => waveSurferRef.current?.playPause();
 

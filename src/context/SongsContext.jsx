@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { useAuth } from './AuthContext';
 import musicApi from '../services/musicApi'; 
 import { getTopTracks, searchSongs as searchDeezer } from '../services/deezerService'; 
 import Swal from 'sweetalert2';
@@ -8,7 +9,6 @@ export const useSongs = () => useContext(SongsContext);
 
 export const SongsProvider = ({ children }) => {
     const API_URL_FILES = import.meta.env.VITE_API_URL_FILES || 'http://localhost:3000';
-
     const [songs, setSongs] = useState([]); 
     const [adminSongs, setAdminSongs] = useState([]); 
     const [playlists, setPlaylists] = useState([]); 
@@ -17,6 +17,7 @@ export const SongsProvider = ({ children }) => {
     const [currentSong, setCurrentSong] = useState(null);
     const [searchTerm, setSearchTerm] = useState(''); 
     const [favorites, setFavorites] = useState([]);
+    const { token } = useAuth();
 
     // --- 🛠️ FUNCIÓN DE MAPEO CENTRALIZADA CORREGIDA ---
     const mapLocalSong = (s) => ({
@@ -120,13 +121,15 @@ export const SongsProvider = ({ children }) => {
     useEffect(() => {
         loadAdminSongs();
         loadInitialSongs();
-        
-        const token = localStorage.getItem('token');
+        loadPlaylists();
+    }, []);
+
+    useEffect(() => {
         if (token) {
             loadFavorites();
-            loadPlaylists(); 
+            loadPlaylists();
         }
-    }, []);
+    }, [token]);
 
     const handleSearch = async (query, isGenre = false) => {
     if (!query.trim()) {

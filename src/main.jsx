@@ -7,16 +7,9 @@ import { AuthProvider } from './context/AuthContext';
 import './App.css';
 
 createRoot(document.getElementById('root')).render(
-  <StrictMode>
-            {/* 2. AuthProvider: Proporciona la lógica de autenticación (login/registro/usuario) */}
-      <AuthProvider>
-        {/* 3. SongsProvider: Proporciona el estado global de canciones, búsqueda y reproducción. */}
+  <AuthProvider>
         <SongsProvider>
-          
-          {/* 4. AppRouter: Contiene el diseño (Layout Grid) y todas las rutas (Home, Admin, etc.) */}
           <AppRouter />
-          
         </SongsProvider>
       </AuthProvider>
-    </StrictMode>,
 )

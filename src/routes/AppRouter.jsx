@@ -15,40 +15,49 @@ import MyPlaylists from '../pages/MyPlaylists'; // Vista general de TODAS las pl
 import Search from '../pages/Search';
 import Favorites from '../components/Favorites';
 import VerifyEmail from '../pages/VerifyEmail';
+import MainLayout from "../layouts/MainLayout";
 
 const AppRouter = () => {
     return (
         <Router>
-            <Routes>
-                {/* RUTAS PÚBLICAS */}
-                <Route path="/login" element={<Login />} />
-                <Route path="/register" element={<Register />} />
-                <Route path="/verify-email" element={<VerifyEmail />} />
-                
-                
-                {/* RUTAS PROTEGIDAS (Requieren Login) */}
-                <Route element={<ProtectedRoute requiredRole="user" />}>
+            <div className="app-layout">
+
+                <Routes>
+
+                    {/* RUTAS PÚBLICAS */}
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/register" element={<Register />} />
+                    <Route path="/verify-email" element={<VerifyEmail />} />
+
+                    {/* RUTAS PROTEGIDAS */}
+                    <Route element={<ProtectedRoute requiredRole="user" />}>
+
+                    <Route element={<MainLayout />}>
                     <Route path="/" element={<Home />} />
-                    <Route path="/nosotros" element={<About/>}/>
+                    <Route path="/nosotros" element={<About />} />
                     <Route path="/songdetail" element={<SongDetail />} />
                     <Route path="/search" element={<Search />} />
                     <Route path="/favoritos" element={<Favorites />} />
+                    <Route path="/my-playlists" element={<MyPlaylists />} />
+                    <Route path="/playlist/:id" element={<PlayList />} />
+                    </Route>
+
+                    </Route>
+
+                    {/* ADMIN */}
+                    <Route element={<ProtectedRoute requiredRole="admin" />}>
                     
-                    {/* 🛠️ RUTAS DE PLAYLISTS */}
-                    <Route path="/mis-playlists" element={<MyPlaylists />} /> 
-                    <Route path="/playlist/:id" element={<PlayList />} /> {/* Ruta dinámica para ver el contenido de una lista */}
-                </Route>
+                    <Route element={<MainLayout />}>
+                        <Route path="/admin" element={<Admin />} />
+                    </Route>
+                    
+                    </Route>
 
-                {/* RUTAS DE ADMINISTRADOR */}
-                <Route element={<ProtectedRoute requiredRole="admin" />}>
-                    <Route path="/admin" element={<Admin />} />
-                    {/* 🛠️ NOTA: El admin hereda acceso a las rutas de usuario por jerarquía, 
-                        pero puedes duplicar o dejar solo las específicas de gestión aquí */}
-                </Route>
+                    <Route path="*" element={<NotFound />} />
 
-                {/* Ruta de Fallback (404) */}
-                <Route path="*" element={<NotFound />} />
-            </Routes>
+                </Routes>
+
+            </div>
         </Router>
     );
 };
