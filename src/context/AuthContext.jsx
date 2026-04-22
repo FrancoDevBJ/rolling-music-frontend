@@ -26,7 +26,7 @@ export const AuthProvider = ({ children }) => {
                 email: data.email,
                 displayName: data.name,
                 role: data.role,
-                avatar: data.img // Guardamos la imagen de perfil que viene del server
+                avatar: data.profilePic // Guardamos la imagen de perfil que viene del server
             }, token);
             
             return data;
@@ -70,29 +70,30 @@ export const AuthProvider = ({ children }) => {
     }
     };
 
-    const updateUserData = async (updatedData) => {
+    const updateUserData = async (formData) => {
     try {
-        // Solo mandamos name y surname
-        const dataToSend = {
-            name: updatedData.name,
-            surname: updatedData.surname
-        };
+        const response = await musicApi.put('/auth/profile/update', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        });
 
-        const response = await musicApi.put('/auth/profile/update', dataToSend);
         const { data } = response.data;
 
-        // Actualizamos el estado local manteniendo el mismo email
-        const newUserState = { 
-            ...user, 
-            displayName: `${data.name} ${data.surname || ''}`.trim()
+        // Actualizamos el estado: nombre y también la foto si el backend la devuelve
+        const newUserState = {
+            ...user,
+            displayName: `${data.name} ${data.surname || ''}`.trim(),
+            // El backend devuelve el nombre del archivo o la URL — ajustá según tu respuesta
+            avatar: data.profilePic || data.avatar || user.avatar
         };
-        
+
         saveSession(newUserState, localStorage.getItem('token'));
         return data;
     } catch (error) {
         throw error;
     }
-};
+    };
 
     // --- 🛠️ REGISTRO ACTUALIZADO PARA FORMDATA ---
     const registerWithEmail = async (formData) => {

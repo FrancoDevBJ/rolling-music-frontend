@@ -2,14 +2,15 @@ import { Link } from "react-router-dom";
 import SideMenuItem from "./SideMenuItem";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useAuth } from "../context/AuthContext";
-import { useSongs } from "../context/SongsContext"; // 🛠️ Importamos para leer las playlists
+import { useSongs } from "../context/SongsContext";
 import {
   faHouse,
   faCircleInfo,
   faListUl,
   faSearch,
   faLock,
-  faHeart // Icono para Favoritos
+  faHeart,
+  faUsers  // ✅ Nuevo: icono para panel de usuarios
 } from "@fortawesome/free-solid-svg-icons";
 
 const menuItems = [
@@ -20,13 +21,13 @@ const menuItems = [
 
 function Aside({ onItemClick }) {
   const { isAdmin } = useAuth();
-  const { playlists } = useSongs(); // 🛠️ Obtenemos las listas del contexto global
+  const { playlists } = useSongs();
 
   const handleItemClick = () => {
-  if (window.innerWidth < 768) {
-    onItemClick();
-  }
-};
+    if (window.innerWidth < 768) {
+      onItemClick();
+    }
+  };
 
   return (
     <div className="flex flex-col h-full overflow-y-auto
@@ -48,7 +49,7 @@ function Aside({ onItemClick }) {
             </SideMenuItem>
           ))}
 
-          {/* 🛠️ FAVORITOS (Separado de Playlists) */}
+          {/* FAVORITOS */}
           <SideMenuItem href="/favoritos" onClick={handleItemClick}>
             <FontAwesomeIcon
               icon={faHeart}
@@ -58,13 +59,12 @@ function Aside({ onItemClick }) {
             <span className="truncate">Favoritos</span>
           </SideMenuItem>
 
-          {/* 🛠️ SECCIÓN DINÁMICA: TUS PLAYLISTS */}
+          {/* SECCIÓN DINÁMICA: TUS PLAYLISTS */}
           <div className="pt-6 mt-2 border-t border-white/5">
             <div className="flex items-center justify-between px-4 mb-3">
-               <p className="text-[10px] uppercase tracking-widest font-bold text-gray-500">
+              <p className="text-[10px] uppercase tracking-widest font-bold text-gray-500">
                 Tu Biblioteca
               </p>
-              {/* Enlace rápido para ver todas o crear */}
               <Link to="/my-playlists" onClick={handleItemClick} className="text-[10px] text-purple-400 hover:text-white">Ver todo</Link>
             </div>
             
@@ -73,7 +73,7 @@ function Aside({ onItemClick }) {
                 playlists.map((pl) => (
                   <SideMenuItem 
                     key={pl._id || pl.id} 
-                    href={`/playlist/${pl._id}`} // 🛠️ Ruta dinámica al detalle
+                    href={`/playlist/${pl._id}`}
                     onClick={handleItemClick}
                   >
                     <FontAwesomeIcon
@@ -101,7 +101,17 @@ function Aside({ onItemClick }) {
                   className="w-4 h-4 shrink-0 text-purple-400"
                   aria-hidden="true"
                 />
-                <span className="truncate text-white">Panel Admin</span>
+                <span className="truncate text-white">Panel Canciones</span>
+              </SideMenuItem>
+
+              {/* ✅ Nuevo: Panel de Usuarios */}
+              <SideMenuItem href="/admin/usuarios" onClick={handleItemClick}>
+                <FontAwesomeIcon
+                  icon={faUsers}
+                  className="w-4 h-4 shrink-0 text-purple-400"
+                  aria-hidden="true"
+                />
+                <span className="truncate text-white">Panel Usuarios</span>
               </SideMenuItem>
             </div>
           )}

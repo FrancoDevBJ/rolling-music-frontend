@@ -16,6 +16,7 @@ import Search from '../pages/Search';
 import Favorites from '../components/Favorites';
 import VerifyEmail from '../pages/VerifyEmail';
 import MainLayout from "../layouts/MainLayout";
+import AdminUsers from '../pages/AdminUsers';
 
 const AppRouter = () => {
     return (
@@ -49,6 +50,7 @@ const AppRouter = () => {
                     
                     <Route element={<MainLayout />}>
                         <Route path="/admin" element={<Admin />} />
+                        <Route path="/admin/usuarios" element={<AdminUsers />} />
                     </Route>
                     
                     </Route>

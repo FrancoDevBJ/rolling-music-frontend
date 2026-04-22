@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+
 import { useSongs } from "../context/SongsContext";
 import { useNavigate } from "react-router-dom";
 import AddToPlaylistModal from "./AddToPlaylistModal";
@@ -21,10 +22,10 @@ const Canciones = ({ songs, onRemoveSong, isPlaylistView = false }) => {
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6
                       gap-3 sm:gap-4 md:gap-6 w-full py-4">
         {songs.map((item, index) => {
-          
+
           // 🛠️ LÓGICA DE IMAGEN
           let imageUrl = item.cover || item.imagePath || item.cover_medium || item.imagenUrl || item.album?.cover_medium;
-          
+
           if (imageUrl && !imageUrl.startsWith('http')) {
             imageUrl = `${API_URL_FILES}/rollingMusic/covers/${imageUrl}`;
           } else if (!imageUrl) {
@@ -36,7 +37,7 @@ const Canciones = ({ songs, onRemoveSong, isPlaylistView = false }) => {
             item.preview = item.audio;
           }
 
-          const title      = item.title  || item.titulo || item.name  || "Título Desconocido";
+          const title = item.title || item.titulo || item.name || "Título Desconocido";
           const artistName = item.artist?.name || item.artista || item.artist || "Artista Desconocido";
 
           const isPlayable = !!item.preview || !!item.url_cancion;
@@ -56,23 +57,23 @@ const Canciones = ({ songs, onRemoveSong, isPlaylistView = false }) => {
               onClick={handleClick}
               className={`group relative rounded-xl p-3 text-center text-white transition-all duration-300
                           ${isPlayable
-                            ? "bg-neutral-900/40 hover:bg-neutral-800 cursor-pointer hover:-translate-y-1 shadow-lg"
-                            : "bg-neutral-800 opacity-60 cursor-not-allowed"}`}
+                  ? "bg-neutral-900/40 hover:bg-neutral-800 cursor-pointer hover:-translate-y-1 shadow-lg"
+                  : "bg-neutral-800 opacity-60 cursor-not-allowed"}`}
             >
-              
+
               {/* BOTÓN DE FAVORITOS */}
-              <button 
+              <button
                 onClick={(e) => {
-                  e.stopPropagation(); 
+                  e.stopPropagation();
                   toggleFavorite(item);
                 }}
                 className="absolute top-4 right-4 z-20 p-1.5 rounded-full bg-black/40 backdrop-blur-md 
                             opacity-0 group-hover:opacity-100 transition-opacity duration-300 hover:scale-110"
               >
-                <svg 
-                  xmlns="http://www.w3.org/2000/svg" 
-                  className={`h-5 w-5 transition-colors ${isFavorite ? 'fill-red-500 text-red-500' : 'text-gray-300 fill-none hover:text-white'}`} 
-                  viewBox="0 0 24 24" 
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className={`h-5 w-5 transition-colors ${isFavorite ? 'fill-red-500 text-red-500' : 'text-gray-300 fill-none hover:text-white'}`}
+                  viewBox="0 0 24 24"
                   stroke="currentColor"
                 >
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
@@ -108,6 +109,7 @@ const Canciones = ({ songs, onRemoveSong, isPlaylistView = false }) => {
               )}
 
 
+              {/* OPCIONES PARA MOBILE */}
 
               <button
                 onClick={(e) => {
@@ -118,6 +120,7 @@ const Canciones = ({ songs, onRemoveSong, isPlaylistView = false }) => {
               >
                 ⋮
               </button>
+              
               {mobileMenuSong && (
                 <div className="fixed inset-0 z-50 md:hidden">
 
@@ -183,7 +186,9 @@ const Canciones = ({ songs, onRemoveSong, isPlaylistView = false }) => {
                 </div>
               )}
 
-               
+
+
+
 
               <div className="relative overflow-hidden rounded-lg mb-3 aspect-square shadow-black/50 shadow-md">
                 <img
@@ -199,7 +204,7 @@ const Canciones = ({ songs, onRemoveSong, isPlaylistView = false }) => {
                   <div className="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity">
                     <div className="bg-violet-600 p-3 rounded-full shadow-xl transform translate-y-4 group-hover:translate-y-0 transition-transform">
                       <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 fill-white" viewBox="0 0 24 24">
-                        <path d="M8 5v14l11-7z"/>
+                        <path d="M8 5v14l11-7z" />
                       </svg>
                     </div>
                   </div>
@@ -222,7 +227,7 @@ const Canciones = ({ songs, onRemoveSong, isPlaylistView = false }) => {
           song={selectedSongForPlaylist}
           onClose={() => setSelectedSongForPlaylist(null)}
         />
-      )} 
+      )}
     </div>
   );
 };

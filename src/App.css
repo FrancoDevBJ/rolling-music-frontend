@@ -25,6 +25,10 @@
   }
 }
 
+.animate-slideUp {
+  animation: slideUp 0.25s ease-out;
+}
+
 /* Scroll más lindo */
 ::-webkit-scrollbar {
   width: 6px;
