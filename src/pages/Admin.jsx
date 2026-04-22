@@ -156,19 +156,34 @@ const Admin = () => {
                             <label className="text-[10px] uppercase font-bold text-gray-500 mb-2 block">Artista</label>
                             <input type="text" name="artist" value={formData.artist} onChange={handleChange} className="w-full p-3 bg-neutral-800 border border-neutral-700 rounded-lg text-white" required />
                         </div>
+                        <div>
+                            <label className="text-[10px] uppercase font-bold text-gray-500 mb-2 block">Album</label>
+                            <input type="text" name="album" onChange={handleChange} className="w-full p-3 bg-neutral-800 border border-neutral-700 rounded-lg text-white" required />
+                        </div>
+                        <div>
+                            <label className="text-[10px] uppercase font-bold text-gray-500 mb-2 block">Año de lanzamiento</label>
+                            <input type="date" name="lanzamiento" onChange={handleChange} className="w-full p-3 bg-neutral-800 border border-neutral-700 rounded-lg text-white" min="1972-12-31" required />
+                        </div>
+
                     </div>
 
                     <div>
-                        <label className="text-[10px] uppercase font-bold text-gray-500 mb-2 block">Género (Zod: Album)</label>
+                        <label className="text-[10px] uppercase font-bold text-gray-500 mb-2 block">Género</label>
                         <select name="genre" value={formData.genre} onChange={handleChange} className="w-full p-3 bg-neutral-800 border border-neutral-700 rounded-lg text-white" required>
                             <option value="">Seleccionar...</option>
-                            <option value="rock">rock</option>
-                            <option value="pop">pop</option>
-                            <option value="cumbia">cumbia</option>
-                            <option value="bachata">bachata</option>
-                            <option value="trap">trap</option>
-                            <option value="baladas">baladas</option>
-                            <option value="otro">otro</option>
+                            <option value="bachata">Bachata</option>
+                            <option value="baladas">Baladas</option>
+                            <option value="cumbia">Cumbia</option>
+                            <option value="funk">Funk</option>
+                            <option value="jazz">Jazz</option>
+                            <option value="pop">Pop</option>
+                            <option value="ryb">R&B</option>
+                            <option value="reggae">Reggae</option>
+                            <option value="reggaeton">Reggaeton</option>
+                            <option value="rock">Rock</option>
+                            <option value="salsa">Salsa</option>
+                            <option value="trap">Trap</option>
+                            <option value="otro">Otro</option>
                         </select>
                         {errors.genre && <p className="text-red-500 text-xs mt-1">{errors.genre}</p>}
                     </div>
@@ -176,11 +191,11 @@ const Admin = () => {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div className="p-4 bg-neutral-800 rounded-xl border border-dashed border-neutral-700">
                             <label className="text-xs font-bold text-gray-400 mb-2 block text-center">AUDIO (MP3)</label>
-                            <input type="file" name="audio" accept="audio/*" onChange={handleFileChange} className="w-full text-xs text-gray-500 file:bg-violet-600 file:text-white file:rounded-full file:border-0 file:px-4 file:py-1" required/>
+                            <input type="file" name="audio" accept="audio/*" onChange={handleFileChange} className="block w-full text-xs text-gray-200 cursor-pointer bg-neutral-700 rounded-full pr-2 pl-0 file:cursor-pointer file:bg-violet-800 file:text-white file:border-0 file:px-4 file:py-2 file:mr-4" required/>
                         </div>
                         <div className="p-4 bg-neutral-800 rounded-xl border border-dashed border-neutral-700">
                             <label className="text-xs font-bold text-gray-400 mb-2 block text-center">PORTADA (JPG/PNG)</label>
-                            <input type="file" name="cover" accept="image/*" onChange={handleFileChange} className="w-full text-xs text-gray-500 file:bg-fuchsia-600 file:text-white file:rounded-full file:border-0 file:px-4 file:py-1" required/>
+                            <input type="file" name="cover" accept="image/*" onChange={handleFileChange} className="block w-full text-xs text-gray-200 cursor-pointer bg-neutral-700 rounded-full pr-2 pl-0 file:cursor-pointer file:bg-violet-800 file:text-white file:border-0 file:px-4 file:py-2 file:mr-4" required/>
                         </div>
                     </div>
 

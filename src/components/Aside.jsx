@@ -52,7 +52,7 @@ function Aside({ onItemClick }) {
           <SideMenuItem href="/favoritos" onClick={handleItemClick}>
             <FontAwesomeIcon
               icon={faHeart}
-              className="w-4 h-4 shrink-0 text-red-500"
+              className="w-4 h-4 shrink-0 text-purple-400"
               aria-hidden="true"
             />
             <span className="truncate">Favoritos</span>
@@ -98,10 +98,10 @@ function Aside({ onItemClick }) {
               <SideMenuItem href="/admin" onClick={handleItemClick}>
                 <FontAwesomeIcon
                   icon={faLock}
-                  className="w-4 h-4 shrink-0 text-fuchsia-500"
+                  className="w-4 h-4 shrink-0 text-purple-400"
                   aria-hidden="true"
                 />
-                <span className="truncate font-bold text-fuchsia-400">Panel Admin</span>
+                <span className="truncate text-white">Panel Admin</span>
               </SideMenuItem>
             </div>
           )}
