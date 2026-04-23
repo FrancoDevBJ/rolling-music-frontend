@@ -42,32 +42,31 @@ export const AuthProvider = ({ children }) => {
     const loginWithGoogle = async () => {
     try {
         const firebaseUser = await googleAuthService.loginWithGoogle();
-        
-        const fullName = firebaseUser.displayName || "Usuario Google";
-        const [firstName, ...lastNameParts] = fullName.split(" ");
-        const lastName = lastNameParts.join(" ") || "Google";
 
-        // 🛠️ Enviamos 'isGoogleLogin' como string para asegurar compatibilidad
-        const response = await musicApi.post('/auth/login', { 
+        // ✅ Usamos directamente los datos que ya trae Firebase
+        const response = await musicApi.post('/auth/login', {
             email: firebaseUser.email,
-            name: firstName,
-            surname: lastName,
-            isGoogleLogin: "true" 
+            name: firebaseUser.name,        // ya viene bien del servicio
+            surname: firebaseUser.name?.split(' ').slice(1).join(' ') || 'Google',
+            photoURL: firebaseUser.photoURL,
+            isGoogleLogin: "true"
         });
 
         const { token, data } = response.data;
+
         saveSession({
             id: data.id || data._id,
             email: data.email,
             displayName: data.name,
+            surname: data.surname,
             role: data.role,
-            avatar: data.photoURL || data.profilePic
+            avatar: firebaseUser.photoURL   // ✅ foto de Google
         }, token);
 
-        return response.data; // 🛠️ IMPORTANTE: Retorna la data para que el Form sepa que terminó
+        return response.data;
     } catch (error) {
         console.error('Detalle error backend:', error.response?.data);
-        throw error; 
+        throw error;
     }
     };
 

@@ -23,12 +23,14 @@ const Navbar = ({ toggleSidebar }) => {
   
   const getAvatar = () => {
     if (!user) return defaultAvatar;
-    const photo = user.photoURL || user.avatar;
+    const photo = user.photoURL || user.avatar ;
     if (!photo) return defaultAvatar;
     return photo.startsWith('http') 
       ? photo 
       : `${API_URL_FILES}/uploads/profiles/${photo}`;
   };
+
+  console.log('user en navbar:', user);
 
   const userName = user?.displayName || user?.name || 'Usuario';
 
