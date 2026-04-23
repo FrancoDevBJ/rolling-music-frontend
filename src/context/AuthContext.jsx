@@ -25,6 +25,7 @@ export const AuthProvider = ({ children }) => {
                 id: data.id || data._id, // Normalizamos el ID
                 email: data.email,
                 displayName: data.name,
+                surname: data.surname,
                 role: data.role,
                 avatar: data.profilePic // Guardamos la imagen de perfil que viene del server
             }, token);

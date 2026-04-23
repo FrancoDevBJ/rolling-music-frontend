@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import musicApi from '../services/musicApi';
 import Swal from 'sweetalert2';
+const API_URL_FILES = import.meta.env.VITE_API_URL_FILES || 'http://localhost:3000';
 
 // ─── Helpers ───────────────────────────────────────────────────────────────
 
@@ -58,7 +59,10 @@ const UserModal = ({ user, onClose, onRoleChange, onDelete }) => {
                         className="absolute top-4 right-4 text-gray-500 hover:text-white text-lg transition-colors"
                     >✕</button>
                     <img
-                        src={user.profilePic}
+                        src={user.profilePic?.startsWith('http')
+                            ? user.profilePic 
+                            : `${API_URL_FILES}/uploads/profiles/${user.profilePic}`
+                            }
                         alt={user.name}
                         className="absolute -bottom-8 left-6 w-16 h-16 rounded-2xl object-cover border-2 border-white/10 shadow-xl"
                         onError={(e) => { e.target.src = 'https://www.iconpacks.net/icons/2/free-user-icon-3296-thumb.png'; }}
@@ -322,7 +326,10 @@ const AdminUsers = () => {
                                 >
                                     {/* Avatar */}
                                     <img
-                                        src={user.profilePic}
+                                        src={user.profilePic?.startsWith('http')
+                                            ? user.profilePic 
+                                            : `${API_URL_FILES}/uploads/profiles/${user.profilePic}`
+                                            }
                                         alt={user.name}
                                         className="w-11 h-11 rounded-xl object-cover flex-shrink-0 border border-white/10"
                                         onError={(e) => { e.target.src = 'https://www.iconpacks.net/icons/2/free-user-icon-3296-thumb.png'; }}

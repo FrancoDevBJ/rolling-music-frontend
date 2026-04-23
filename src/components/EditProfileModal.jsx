@@ -3,6 +3,7 @@ import Cropper from 'react-easy-crop';
 import { useAuth } from '../context/AuthContext';
 import { getCroppedImg } from '../utils/cropImage';
 import Swal from 'sweetalert2';
+const API_URL_FILES = import.meta.env.VITE_API_URL_FILES || 'http://localhost:3000';
 
 const EditProfileModal = ({ isOpen, onClose }) => {
     const { user, updateUserData } = useAuth();
@@ -83,8 +84,12 @@ const EditProfileModal = ({ isOpen, onClose }) => {
     };
     
     // Avatar actual (antes de cualquier cambio)
-    const currentAvatar = user?.avatar || user?.photoURL ||
-    'https://cdn-icons-png.flaticon.com/512/10813/10813372.png';
+    const currentAvatar = user?.photoURL || 
+    (user?.avatar
+        ? user.avatar.startsWith('http')
+            ? user.avatar
+            : `${API_URL_FILES}/uploads/profiles/${user.avatar}`
+        : 'https://cdn-icons-png.flaticon.com/512/10813/10813372.png');
     
     if (!isOpen) return null;
     
