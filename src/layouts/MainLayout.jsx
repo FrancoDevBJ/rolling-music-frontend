@@ -80,6 +80,7 @@ const MainLayout = () => {
       {/* PLAYER */}
       <footer className={
         `[grid-area:player]
+        overflow-hidden
         shadow-lg
         transition-all duration-300
         ${currentSong ? "opacity-100 translate-y-0 h-auto" : "opacity-0 translate-y-4 h-0 overflow-hidden"}`

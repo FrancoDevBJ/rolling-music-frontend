@@ -1,18 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { useSongs } from "../context/SongsContext";
 import { useNavigate } from 'react-router-dom';
-// 🛠️ CORRECCIÓN: Las funciones de catálogo externo vienen de deezerService
 import * as deezerService from '../services/deezerService';
 
 const CatalogoPorSecciones = () => {
     const { selectSong } = useSongs();
     const navigate = useNavigate();
-    
-    // URL base para imágenes de tu backend (fallback)
+
     const API_URL_FILES = import.meta.env.VITE_API_URL_FILES || 'http://localhost:3000';
 
     const [secciones, setSecciones] = useState([
-        { titulo: "Recomendadas",      data: [], loading: true, error: null, fetcher: deezerService.getTopTracks   },
+        { titulo: "Recomendadas",       data: [], loading: true, error: null, fetcher: deezerService.getTopTracks    },
         { titulo: "Lo más escuchado",   data: [], loading: true, error: null, fetcher: deezerService.getMostListened },
         { titulo: "Nuevos lanzamientos",data: [], loading: true, error: null, fetcher: deezerService.getNewReleases  },
         { titulo: "Top Global",         data: [], loading: true, error: null, fetcher: deezerService.getGlobalTop    },
@@ -23,7 +21,6 @@ const CatalogoPorSecciones = () => {
             const loadedPromises = secciones.map(async (sec) => {
                 try {
                     const results = await sec.fetcher();
-                    // Normalizamos los resultados para asegurar que tengan IDs únicos
                     const normalizedResults = results.map(song => ({
                         ...song,
                         codigo_unico: song.codigo_unico || `deezer-${song.id}`
@@ -38,7 +35,6 @@ const CatalogoPorSecciones = () => {
             setSecciones(newSections);
         };
         loadSections();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const Cards = ({ titulo, data, loading, error }) => {
@@ -54,6 +50,9 @@ const CatalogoPorSecciones = () => {
         );
         if (data.length === 0) return null;
 
+        // ✅ Cola de la sección: solo reproducibles
+        const playableInSection = data.filter(s => !!s.preview || !!s.url_cancion);
+
         return (
             <div className="mb-10 sm:mb-12">
                 <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-white mb-4 sm:mb-6
@@ -62,24 +61,30 @@ const CatalogoPorSecciones = () => {
                 </h2>
 
                 <div className="flex overflow-x-auto gap-3 sm:gap-4 pb-3 px-2 sm:px-4
-                                 [scrollbar-width:thin]
-                                 [scrollbar-color:#7c3aed_transparent]
-                                 [&::-webkit-scrollbar]:h-1.5
-                                 [&::-webkit-scrollbar-track]:bg-transparent
-                                 [&::-webkit-scrollbar-thumb]:bg-purple-700
-                                 [&::-webkit-scrollbar-thumb]:rounded-full
-                                 hover:[&::-webkit-scrollbar-thumb]:bg-violet-500">
+                                [scrollbar-width:thin]
+                                [scrollbar-color:#7c3aed_transparent]
+                                [&::-webkit-scrollbar]:h-1.5
+                                [&::-webkit-scrollbar-track]:bg-transparent
+                                [&::-webkit-scrollbar-thumb]:bg-purple-700
+                                [&::-webkit-scrollbar-thumb]:rounded-full
+                                hover:[&::-webkit-scrollbar-thumb]:bg-violet-500">
                     {data.map((item, index) => {
-                        // Lógica de compatibilidad de campos
-                        const imageUrl = item.album?.cover_medium || item.url_imagen || item.imagenUrl;
-                        const title = item.title || item.titulo || item.name;
+                        const imageUrl   = item.album?.cover_medium || item.url_imagen || item.imagenUrl;
+                        const title      = item.title || item.titulo || item.name;
                         const artistName = item.artist?.name || item.artista || 'Artista Desconocido';
                         const isPlayable = !!item.preview || !!item.url_cancion;
 
                         return (
                             <div
                                 key={item.codigo_unico || index}
-                                onClick={() => isPlayable ? selectSong(item) : navigate('/notFound')}
+                                onClick={() => {
+                                    if (isPlayable) {
+                                        // ✅ Pasa la cola de toda la sección
+                                        selectSong(item, playableInSection);
+                                    } else {
+                                        navigate('/notFound');
+                                    }
+                                }}
                                 className={`shrink-0 w-36 sm:w-44 rounded-lg p-2 sm:p-3 text-center text-white
                                             transition-all duration-300 shadow-lg
                                             ${isPlayable
@@ -101,7 +106,9 @@ const CatalogoPorSecciones = () => {
                                     {isPlayable && (
                                         <div className="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity rounded-md">
                                             <div className="bg-violet-600 p-2 rounded-full">
-                                                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 fill-white" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                                                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 fill-white" viewBox="0 0 24 24">
+                                                    <path d="M8 5v14l11-7z"/>
+                                                </svg>
                                             </div>
                                         </div>
                                     )}
