@@ -1,141 +1,144 @@
-import React, { useState } from 'react';
-import { useSongs } from '../context/SongsContext'; 
-import Canciones from '../components/Canciones.jsx'; 
+import React from 'react';
+import { useSongs } from '../context/SongsContext';
+import Canciones from '../components/Canciones.jsx';
 import Footer from '../components/Footer.jsx';
 
 const GENRES = [
-  { name: 'Country', color: 'from-orange-600 to-amber-900' }, // Corregido: 'Country'
-  { name: 'Rock', color: 'from-red-900 to-rose-700' },
-  { name: 'Hip-Hop', color: 'from-indigo-900 to-purple-800' },
-  { name: 'Pop', color: 'from-pink-700 to-rose-900' },
-  { name: 'Latin', color: 'from-slate-500 to-purple-400' }, // Corregido: 'Latin'
-  { name: 'R&B', color: 'from-orange-900 to-red-700' },
-  { name: 'Christian', color: 'from-teal-800 to-stone-500' },
-  { name: 'Electronic', color: 'from-purple-800 to-emerald-900' },
-  { name: 'Kids', color: 'from-orange-400 to-amber-600' },
-  { name: 'Classical', color: 'from-stone-700 to-gray-900' },
-  { name: 'Jazz', color: 'from-indigo-900 to-purple-800' },
-  { name: 'K-Pop', color: 'from-pink-500 to-rose-700' },
-  { name: 'Tropical', color: 'from-emerald-700 to-teal-900' },
-  { name: 'Urban', color: 'from-teal-800 to-stone-500' },
-  { name: 'Oldies', color: 'from-purple-800 to-emerald-900' },
-  { name: 'Metal', color: 'from-zinc-800 to-black' },
+    { name: 'Rock',        color: '#7f1d1d', accent: '#ef4444' },
+    { name: 'Pop',         color: '#831843', accent: '#ec4899' },
+    { name: 'Hip-Hop',     color: '#1e1b4b', accent: '#818cf8' },
+    { name: 'Electronic',  color: '#064e3b', accent: '#34d399' },
+    { name: 'Latin',       color: '#7c2d12', accent: '#fb923c' },
+    { name: 'R&B',         color: '#4a1942', accent: '#c084fc' },
+    { name: 'Jazz',        color: '#1c1917', accent: '#d6d3d1' },
+    { name: 'K-Pop',       color: '#4d1c6d', accent: '#f0abfc' },
+    { name: 'Classical',   color: '#1c1917', accent: '#fbbf24' },
+    { name: 'Metal',       color: '#111827', accent: '#6b7280' },
+    { name: 'Tropical',    color: '#064e3b', accent: '#6ee7b7' },
+    { name: 'Country',     color: '#451a03', accent: '#fcd34d' },
+    { name: 'Christian',   color: '#0c4a6e', accent: '#7dd3fc' },
+    { name: 'Urban',       color: '#0f172a', accent: '#94a3b8' },
+    { name: 'Kids',        color: '#7c2d12', accent: '#fdba74' },
+    { name: 'Oldies',      color: '#1e3a5f', accent: '#93c5fd' },
 ];
 
 const Search = () => {
-    const [isOpen, setIsOpen] = useState(true);
-    const { 
-        handleSearch,
-        songs,           // Resultados de Deezer
-        adminSongs,      // Tus resultados de MongoDB
-        isLoading,
-        error,
-        searchTerm,     
-    } = useSongs();
+    const { handleSearch, songs, adminSongs, isLoading, error, searchTerm } = useSongs();
 
-    // Función para buscar por género y hacer scroll suave a los resultados
     const handleGenreClick = (genreName) => {
-    // El segundo parámetro indica que ES un género
-    handleSearch(genreName, true); 
-    
-    const resultsSection = document.getElementById('search-results');
-    if (resultsSection) {
-        resultsSection.scrollIntoView({ behavior: 'smooth' });
-    }
-};
+        handleSearch(genreName, true);
+        const el = document.getElementById('search-results');
+        if (el) el.scrollIntoView({ behavior: 'smooth' });
+    };
 
     if (error) {
         return (
-            <div className="flex items-center justify-center min-h-screen bg-black text-red-500 p-8">
-                <div className="bg-neutral-900 p-6 rounded-xl border border-red-900/30">
-                    <h2 className="text-xl font-bold mb-2">Error de conexión</h2>
-                    <p>{error}</p>
+            <div className="flex items-center justify-center min-h-screen bg-black text-white p-8">
+                <div className="p-8 rounded-2xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(239,68,68,0.3)' }}>
+                    <h2 className="text-xl font-black mb-2">Error de conexión</h2>
+                    <p className="text-gray-500 text-sm">{error}</p>
                 </div>
             </div>
         );
     }
 
+    const hasResults = songs.length > 0 || adminSongs.length > 0;
+
     return (
-        <div>
+        <>
+            <style>{`
+                @keyframes fadeSlideUp {
+                    from { opacity: 0; transform: translateY(16px); }
+                    to   { opacity: 1; transform: translateY(0); }
+                }
+                .fade-up { animation: fadeSlideUp 0.5s ease both; }
+                .genre-card { transition: transform 0.2s ease, box-shadow 0.2s ease; }
+                .genre-card:hover { transform: scale(1.04); }
+                .genre-card:active { transform: scale(0.97); }
+            `}</style>
 
-            <main className="[grid-area:main] overflow-y-auto w-full bg-gradient-to-b from-neutral-900 to-black">
-                <div className='animate-fade-in px-4 md:px-8 py-6 w-full max-w-7xl mx-auto'>
-                    
-                    <h2 className="text-3xl font-black text-violet-400 mb-8 border-b border-violet-900/30 pb-4">
-                        Explorar Géneros
-                    </h2>
-                    
-                    {/* GRILLA DE GÉNEROS */}
-                    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 mb-12">
-                        {GENRES.map((genre) => (
-                            <button
-                                key={genre.name}
-                                onClick={() => handleGenreClick(genre.name)}
-                                className={`h-28 rounded-xl bg-gradient-to-br ${genre.color}
-                                            flex items-start p-4 text-left relative overflow-hidden
-                                            hover:scale-[1.03] active:scale-95 transition-all duration-300 shadow-xl group`}
-                            >
-                                <span className="text-white font-black text-xl z-10">
-                                    {genre.name}
-                                </span>
-                                {/* Efecto decorativo de fondo */}
-                                <div className="absolute -right-2 -bottom-2 w-16 h-16 bg-white/10 rounded-full blur-2xl group-hover:bg-white/20 transition-colors"></div>
-                            </button>
-                        ))}
-                    </div>
+            <div className="min-h-full flex flex-col" style={{ background: 'linear-gradient(160deg, #0d0118 0%, #0a0a0a 40%, #020010 100%)' }}>
+                <main className="flex-1 px-4 sm:px-6 md:px-10 py-8 md:py-12">
+                    <div className="max-w-7xl mx-auto space-y-12">
 
-                    {/* SECCIÓN DE RESULTADOS */}
-                    <div id="search-results" className="scroll-mt-6 pt-8 border-t border-white/5">
-                        <h2 className="text-3xl font-black text-white mb-8">
-                            {searchTerm ? (
-                                <>Resultados para <span className="text-violet-400">"{searchTerm}"</span></>
-                            ) : (
-                                "Descubrimientos para ti"
-                            )}
-                        </h2>
-                        
-                        {isLoading && (
-                            <div className="flex flex-col items-center justify-center py-20">
-                                <div className="w-12 h-12 border-4 border-violet-500 border-t-transparent rounded-full animate-spin"></div>
-                                <p className="mt-4 text-gray-400 font-medium">Buscando en la biblioteca...</p>
+                        {/* Header */}
+                        <div className="fade-up">
+                            <p className="text-[10px] uppercase tracking-[0.4em] text-violet-500 font-black mb-2">Descubrí</p>
+                            <h1 className="font-black leading-none" style={{ fontSize: 'clamp(2rem, 5vw, 3.5rem)', letterSpacing: '-0.03em' }}>
+                                Explorar <span style={{ color: '#a78bfa' }}>Géneros</span>
+                            </h1>
+                        </div>
+
+                        {/* Grid géneros */}
+                        <div className="fade-up grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4" style={{ animationDelay: '100ms' }}>
+                            {GENRES.map((genre, i) => (
+                                <button
+                                    key={genre.name}
+                                    onClick={() => handleGenreClick(genre.name)}
+                                    className="genre-card relative h-24 sm:h-28 rounded-2xl overflow-hidden text-left p-4 flex flex-col justify-between"
+                                    style={{
+                                        background: genre.color,
+                                        border: `1px solid ${genre.accent}20`,
+                                        animationDelay: `${i * 30}ms`,
+                                        animation: 'fadeSlideUp 0.5s ease both'
+                                    }}
+                                >
+                                    <div className="absolute -bottom-4 -right-4 w-20 h-20 rounded-full pointer-events-none" style={{ background: genre.accent, filter: 'blur(20px)', opacity: 0.3 }} />
+                                    <span className="text-white font-black text-base sm:text-lg z-10 leading-tight">{genre.name}</span>
+                                    <span className="text-[10px] font-black uppercase tracking-wider z-10" style={{ color: genre.accent }}>Explorar →</span>
+                                </button>
+                            ))}
+                        </div>
+
+                        {/* Resultados */}
+                        <div id="search-results" className="scroll-mt-8 fade-up" style={{ animationDelay: '200ms' }}>
+                            <div className="mb-8 pb-4" style={{ borderBottom: '1px solid rgba(255,255,255,0.05)' }}>
+                                <h2 className="font-black" style={{ fontSize: 'clamp(1.5rem, 3vw, 2rem)', letterSpacing: '-0.02em' }}>
+                                    {searchTerm
+                                        ? <>Resultados para <span style={{ color: '#a78bfa' }}>"{searchTerm}"</span></>
+                                        : <>Descubrimientos <span style={{ color: '#a78bfa' }}>para ti</span></>
+                                    }
+                                </h2>
                             </div>
-                        )}
-                        
-                        {!isLoading && searchTerm && songs.length === 0 && adminSongs.length === 0 && (
-                            <div className="text-center py-20 bg-neutral-900/50 rounded-2xl border border-dashed border-white/10">
-                                <p className="text-gray-400 text-lg">No encontramos coincidencias para "{searchTerm}"</p>
-                                <p className="text-sm text-gray-600 mt-2">Prueba con otro artista, género o canción.</p>
-                            </div>
-                        )}
-                        
-                        {/* RESULTADOS HÍBRIDOS */}
-                        <div className="space-y-12">
-                            {/* Primero mostramos tus canciones de MongoDB si hay resultados */}
-                            {adminSongs.length > 0 && (
-                                <div>
-                                    <h3 className="text-sm uppercase tracking-[0.2em] text-violet-500 font-bold mb-4">Desde tu servidor</h3>
-                                    <Canciones songs={adminSongs} />
+
+                            {isLoading && (
+                                <div className="flex flex-col items-center justify-center py-20 gap-4">
+                                    <div className="w-10 h-10 border-2 border-violet-500 border-t-transparent rounded-full animate-spin" />
+                                    <p className="text-gray-600 text-sm">Buscando en la biblioteca...</p>
                                 </div>
                             )}
 
-                            {/* Luego mostramos los resultados de Deezer */}
-                            {songs.length > 0 && (
-                                <div>
-                                    <h3 className="text-sm uppercase tracking-[0.2em] text-gray-500 font-bold mb-4">Catálogo Global</h3>
-                                    <Canciones songs={songs} />
+                            {!isLoading && searchTerm && !hasResults && (
+                                <div className="flex flex-col items-center justify-center py-20 rounded-3xl text-center" style={{ background: 'rgba(255,255,255,0.02)', border: '1px dashed rgba(255,255,255,0.08)' }}>
+                                    <p className="text-5xl mb-4">🔍</p>
+                                    <p className="text-white font-black text-lg mb-2">Sin resultados</p>
+                                    <p className="text-gray-600 text-sm">No encontramos coincidencias para "{searchTerm}"</p>
+                                </div>
+                            )}
+
+                            {!isLoading && (
+                                <div className="space-y-12">
+                                    {adminSongs.length > 0 && (
+                                        <div>
+                                            <p className="text-[10px] uppercase tracking-[0.3em] text-violet-500 font-black mb-4">Desde tu servidor</p>
+                                            <Canciones songs={adminSongs} />
+                                        </div>
+                                    )}
+                                    {songs.length > 0 && (
+                                        <div>
+                                            <p className="text-[10px] uppercase tracking-[0.3em] text-gray-600 font-black mb-4">Catálogo Global</p>
+                                            <Canciones songs={songs} />
+                                        </div>
+                                    )}
                                 </div>
                             )}
                         </div>
                     </div>
-                </div>
-                <Footer/>
-            </main>
-
-            <footer className="[grid-area:player] w-full border-t border-white/5">
-                
-            </footer>
-        </div>
+                </main>
+                <Footer />
+            </div>
+        </>
     );
-}
+};
 
 export default Search;
