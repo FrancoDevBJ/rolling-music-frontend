@@ -103,25 +103,28 @@ export const SongsProvider = ({ children }) => {
     };
 
     const toggleFavorite = async (song) => {
-        try {
-            const songId = song.codigo_unico;
-            const response = await musicApi.patch(`/favorites/${songId}`);
-            if (response.data.ok) {
-                setFavorites(prev =>
-                    prev.includes(songId)
-                        ? prev.filter(id => id !== songId)
-                        : [...prev, songId]
-                );
-                Swal.fire({
-                    toast: true, position: 'top-end', icon: 'success',
-                    background: '#1a1a1a', color: '#fff',
-                    title: response.data.message,
-                    showConfirmButton: false, timer: 2000
-                });
-            }
-        } catch (err) {
-            Swal.fire('Error', 'Debes estar logueado para guardar favoritos', 'error');
+    try {
+        const songId = song.codigo_unico;
+        const response = await musicApi.patch(`/favorites/${songId}`);
+        if (response.data.ok) {
+            const { isFavorite } = response.data; // ✅ usamos el estado final del backend
+
+            setFavorites(prev =>
+                isFavorite
+                    ? [...prev, songId]        // el backend dice que ahora ES favorito → agregar
+                    : prev.filter(id => id !== songId) // el backend dice que ya NO es → quitar
+            );
+
+            Swal.fire({
+                toast: true, position: 'top-end', icon: 'success',
+                background: '#1a1a1a', color: '#fff',
+                title: response.data.message,
+                showConfirmButton: false, timer: 2000
+            });
         }
+    } catch (err) {
+        Swal.fire('Error', 'Debes estar logueado para guardar favoritos', 'error');
+    }
     };
 
     useEffect(() => {
